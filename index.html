@@ -41,7 +41,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
-    <body data-spy="scroll" data-target="#sidenav">
+    <body data-spy="scroll" data-target="#sidenavParent">
 	    <div class="wrapper container" style="position:relative">
 	        <header>
 	        	<div>
@@ -60,12 +60,12 @@
 	        </nav>-->
 	        
 	        <div class="row top-buffer">
-	            <aside class="col-md-3">
+	            <aside class="col-md-3" id="sidenavParent">
 	            	<ul class="list-inline text-center">
 	            		<li><a href="/"><img src="img/contributor.jpg" alt="Yummy PhD" class="img-circle img-responsive contributor-image"></a></li>
 	            	</ul>
 	            	
-	            	<ul class="nav nav-stacked top-buffer" id="sidenav" data-toggle="affix" data-spy="affix" data-offset-top="1000">
+	            	<ul class="nav nav-stacked top-buffer" data-toggle="affix" data-spy="affix" data-offset-top="1000">
 				        <li class="active"><a href="#eat">Eat</a></li>
 				        <li><a href="#drink">Drink</a></li>
 				        <li><a href="#walk">Walk</a></li>
