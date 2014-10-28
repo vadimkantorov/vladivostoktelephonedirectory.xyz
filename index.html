@@ -47,10 +47,13 @@
 	            </aside>
 	            <section class="col-md-9">
 	            	<ul class="list-group">
-	            		<li class="list-group-item">
-	            			<h2>Restaurant #1</h2>
-	            			<h3>23 avenue d'Italie, 75013</h3>
-	            		</li>
+	            		{% for spot in site.posts %}
+		            		<li class="list-group-item">
+		            			<h2>{{ spot.name }}</h2>
+		            			<h3>{{ spot.address }}</h3>
+		            			<a href="{{ spot.yelp}}">Yelp</a>&nbsp;<a href="{{ spot.lafourchette }}">La fourchette</a>
+		            		</li>
+		            	{% endfor %}
 	            	</div>
 	            </section>
 	        </div>
