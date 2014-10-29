@@ -74,8 +74,9 @@
 				    </ul>
 	            </aside>
 	            <section class="col-md-9">
-	            	<ul class="list-group" id="eat">
-	            		{% for spot in site.paris.eat %}
+	            	{% for tag in site.verbs %}
+	            	<ul class="list-group" id="{{ tag }}">
+	            		{% for spot in site.paris | where: "tags", tag %}
 		            		<li class="list-group-item">
 		            			<h2>{{ spot.name }}</h2>
 		            			<h3>{{ spot.address }}</h3>
@@ -83,16 +84,7 @@
 		            		</li>
 		            	{% endfor %}
 	            	</ul>
-	            	
-	            	<ul class="list-group" id="drink">
-	            		{% for spot in site.paris.drink %}
-		            		<li class="list-group-item">
-		            			<h2>{{ spot.name }}</h2>
-		            			<h3>{{ spot.address }}</h3>
-		            			<a href="{{ spot.yelp}}">Yelp</a>&nbsp;<a href="{{ spot.lafourchette }}">LaFourchette</a>
-		            		</li>
-		            	{% endfor %}
-	            	</ul>
+	            	{% endfor %}
 	            </section>
 	        </div>
 	    </div>
