@@ -1,12 +1,15 @@
+<!--
 ---
 ---
+-->
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>Yummy PhD</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
         <style>
         	.logo-overlay-text {
 			    background: none repeat scroll 0 0 #FFFFFF;
@@ -17,8 +20,6 @@
 			}
 			
 			.top-buffer {margin-top:20px}
-			
-			.contributor-image {height: 100px; width: 100px;}
 			
 			.affix-top {
 		    position: static;
@@ -36,16 +37,19 @@
 			  border:0 #eee solid;
 			  border-right-width:5px;
 			}
+			
+			label, input { display:block; }
+	    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+	    fieldset { padding:0; border:0; margin-top:25px; }
+	    .ui-dialog .ui-state-error { padding: .3em; }
+	    .validateTips { border: 1px solid transparent; padding: 0.3em; }
         </style>
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
     </head>
     <body data-spy="scroll" data-target="#leftCol">
 	    <div class="wrapper container" style="position:relative">
 	        <header>
 	        	<div>
-	        		<a href="/"><img src="img/logo_large.jpg" alt="Yummy PhD" class="img-responsive"></a>
+	        		<a href="/"><img src="img/logo_large.jpg" style="height:200px; width:840px" alt="Yummy PhD" class="img-responsive"></a>
 	        		<div class="logo-overlay-text">
 	        			<p>We believe PhD students produce better restaurant recommendations than Yelp users ^^</p>
 	        		</div>
@@ -60,34 +64,60 @@
 	        </nav>-->
 	        
 	        <div class="row top-buffer">
-	            <aside class="col-md-3" id="leftCol">
-	            	<ul class="list-inline text-center">
-	            		<li><a href="/"><img src="img/contributor.jpg" alt="Yummy PhD" class="img-circle img-responsive contributor-image"></a></li>
-	            	</ul>
-	            	
-	            	<ul class="nav nav-stacked top-buffer" id="sidenav" data-toggle="affix" data-spy="affix" data-offset-top="1000">
-				        <li class="active"><a href="#eat">Eat</a></li>
-				        <li><a href="#drink">Drink</a></li>
-				        <li><a href="#walk">Walk</a></li>
-				        <li><a href="#work">Work</a></li>
-				        <li><a href="#caffeinate">Caffeinate</a></li>
-				    </ul>
-	            </aside>
 	            <section class="col-md-9">
-	            	{% for tag in site.verbs %}
-	            	<ul class="list-group" id="{{ tag }}">
-	            		{% for spot in site.paris | where: "tags", tag %}
-		            		<li class="list-group-item">
-		            			<h2>{{ spot.name }}</h2>
-		            			<h3>{{ spot.address }}</h3>
-		            			<a href="{{ spot.yelp}}">Yelp</a>&nbsp;<a href="{{ spot.lafourchette }}">LaFourchette</a>
-		            		</li>
-		            	{% endfor %}
+	            	<button  class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal">Add a location</button>
+	            	<ul class="list-group" id="locations">
+            			<li class="list-group-item">
+	            			<h2>Fric-Frac</h2>
+	            			<h3>170 quai Valmy</h3>
+	            		</li>
 	            	</ul>
-	            	{% endfor %}
 	            </section>
 	        </div>
 	    </div>
-	    <footer></footer>
+	    
+	    <div class="modal" tabindex="-1" role="dialog" id="modal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title">Add a location</h4>
+		      </div>
+		      <div class="modal-body">
+		        <fieldset>
+					<label for="name">Name</label>
+					<input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all" />
+					<label for="address">Address</label>
+					<input type="text" name="address" id="address" value="" class="text ui-widget-content ui-corner-all" />
+				</fieldset>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal" id=>Cancel</button>
+		        <button type="button" class="btn btn-primary" id="add-location">Add a location</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	    
+	    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    	 <script>
+  $(function() {
+    
+    $('#modal').modal('hide');
+    $('#add-location').on('click', function() {
+    	$('#locations').append(
+ 			$('<li>').
+ 				append($('<h2>').text($('#name').val())).
+ 				append($('<h3>').text($('#address').val())).
+ 				addClass('list-group-item')
+ 		);
+ 		$('#modal').modal('hide');
+    });
+    $('#modal').on('show.bs.modal', function () {
+    	$(this).find('#name').val('');
+    	$(this).find('#address').val('');
+    });
+  });
+  </script>
     </body>
 </html>
