@@ -43,6 +43,29 @@
 	    fieldset { padding:0; border:0; margin-top:25px; }
 	    .ui-dialog .ui-state-error { padding: .3em; }
 	    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+	    
+	    
+	    
+	    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 250px;
+        height: 250px;
+        cursor: move;
+      }
+
+      .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+      }
+
+      .cropit-image-input {
+        display: block;
+      }
+	    
         </style>
     </head>
     <body data-spy="scroll" data-target="#leftCol">
@@ -83,11 +106,13 @@
 		        <h4 class="modal-title">Add a location</h4>
 		      </div>
 		      <div class="modal-body">
+		      	<div id="cropit-image-editor">
+				  <div class="cropit-image-preview"></div>
+				  <input type="file" class="cropit-image-input" />
+				</div>
 		        <fieldset>
-					<label for="name">Name</label>
-					<input type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all" />
-					<label for="address">Address</label>
-					<input type="text" name="address" id="address" value="" class="text ui-widget-content ui-corner-all" />
+					<input placeholder="Name" type="text" name="name" id="name" value="" class="text ui-widget-content ui-corner-all" />
+					<input placeholder="Address" type="text" name="address" id="address" value="" class="text ui-widget-content ui-corner-all" />
 				</fieldset>
 		      </div>
 		      <div class="modal-footer">
@@ -100,15 +125,19 @@
 	    
 	    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    	<script src="js/jquery.cropit.js"></script>
+    	<script src="js/bootstrap3-typeahead.js"></script>
+    	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxdS7rmh2LLMh3bFhcsLaNUyeKAGgXjCc&amp;libraries=places"></script>
     	 <script>
   $(function() {
-    
-    $('#modal').modal('hide');
+  	$('#modal').modal('hide');
+  	$('#cropit-image-editor').cropit();
     $('#add-location').on('click', function() {
     	$('#locations').append(
  			$('<li>').
  				append($('<h2>').text($('#name').val())).
  				append($('<h3>').text($('#address').val())).
+ 				append($('<img>', {"src" : $('#cropit-image-editor').cropit('export', {'type' : 'image/jpeg'})})).
  				addClass('list-group-item')
  		);
  		$('#modal').modal('hide');
@@ -117,7 +146,21 @@
     	$(this).find('#name').val('');
     	$(this).find('#address').val('');
     });
-  });
+    
+    var geocoder = new google.maps.places.AutocompleteService();
+    $("#address").typeahead({
+      
+      source: function(query, updateAutoComplete) {
+      	geocoder.getPlacePredictions({ input: query }, function(predictions, status) {
+      		if (status == google.maps.places.PlacesServiceStatus.OK) {
+           		updateAutoComplete($.map(predictions, function(prediction) { return prediction.description; }));
+           	}
+   		});
+      	return [];
+      },
+      
+   });
+   });
   </script>
     </body>
 </html>
